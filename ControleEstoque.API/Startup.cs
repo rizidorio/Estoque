@@ -18,6 +18,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ControleEstoque.Infra.IoC;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ControleEstoque.API
 {
@@ -38,19 +39,44 @@ namespace ControleEstoque.API
             string connectionString = Configuration.GetConnectionString("MySQL");
             services.AddDbContext<MySqlContext>(option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-            services.AddControllers();
+            //services.AddAuthorization(auth => {
+            //    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+            //                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+            //                .RequireAuthenticatedUser().Build());
+            //});
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControleEstoque.API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Entre com o token.",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                            }
+                        }, new List<string>()
+                    }
+                });
             });
 
             var key = Encoding.ASCII.GetBytes(Settings.Secret);
+
             services.AddAuthentication(i =>
             {
                 i.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 i.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(i => 
+            .AddJwtBearer(i =>
             {
                 i.RequireHttpsMetadata = false;
                 i.SaveToken = true;
@@ -63,6 +89,7 @@ namespace ControleEstoque.API
                 };
             });
 
+            services.AddControllers();
             services.InjectService();
         }
 

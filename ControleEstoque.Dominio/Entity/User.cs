@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-
-namespace ControleEstoque.Domain.Entity
+﻿namespace ControleEstoque.Domain.Entity
 {
     public class User
     {
@@ -9,14 +6,9 @@ namespace ControleEstoque.Domain.Entity
         public string Code { get; set; }
         public string Name { get; set; }
         public string Password { get; set; }
-        public int Role { get; set; }
+        public string Role { get; set; }
 
-        public User()
-        {
-
-        }
-
-        public User(int id, string code, string name, string password, int role)
+        public User(int id, string code, string name, string password, string role)
         {
             Id = id;
             Code = code;

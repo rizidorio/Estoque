@@ -20,7 +20,7 @@ namespace ControleEstoque.Domain.Dto
         public string Password { get; set; }
 
         [Required(ErrorMessage = "O Perfil é obrigatório.")]
-        public int Role { get; set; }
+        public string Role { get; set; }
 
         public string GetHashPassword()
         {

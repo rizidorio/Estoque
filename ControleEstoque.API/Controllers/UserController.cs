@@ -1,5 +1,8 @@
-﻿using ControleEstoque.Domain.Dto;
+﻿using ControleEstoque.API.Services;
+using ControleEstoque.Domain.Dto;
 using ControleEstoque.Domain.Interface.Service;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,6 +22,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get()
         {
             try
@@ -34,6 +38,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet("{code}")]
+        [Authorize]
         public async Task<IActionResult> Get(string code)
         {
             try
@@ -48,7 +53,27 @@ namespace ControleEstoque.API.Controllers
             }
         }
 
+        [HttpPost("login")]
+        [AllowAnonymous]
+        public async Task<ActionResult<dynamic>> Login([FromBody] UserDto userDto)
+        {
+            var users = await _service.GetAll();
+            var user = users.FirstOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.GetHashPassword()));
+
+            if (user is null)
+                return NotFound("Usuário ou senha inválidos.");
+
+            var token = TokenService.GenerateToken(user);
+            user.Password = string.Empty;
+
+            return new
+            {
+                token
+            };
+        }
+
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] UserDto userDto)
         {
             try
@@ -69,6 +94,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Put([FromBody] UserDto userDto)
         {
             try
@@ -89,6 +115,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpDelete("{code}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string code)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using ControleEstoque.Domain.Dto;
 using ControleEstoque.Domain.Interface.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Get()
         {
             try
@@ -34,6 +36,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet("{code}")]
+        [Authorize]
         public async Task<IActionResult> Get(string code)
         {
             try
@@ -49,6 +52,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Post([FromBody] CategoryDto categoryDto)
         {
             try
@@ -69,6 +73,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> Put([FromBody] CategoryDto categoryDto)
         {
             try
@@ -89,6 +94,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpDelete("{code}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string code)
         {
             try

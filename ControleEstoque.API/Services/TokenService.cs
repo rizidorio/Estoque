@@ -19,7 +19,8 @@ namespace ControleEstoque.API.Services
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, userDto.Name),
-                    new Claim(ClaimTypes.Hash, userDto.Password)
+                    new Claim(ClaimTypes.Hash, userDto.Password),
+                    new Claim(ClaimTypes.Role, userDto.Role)
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
