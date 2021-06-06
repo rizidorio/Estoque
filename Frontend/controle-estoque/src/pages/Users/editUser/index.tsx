@@ -1,6 +1,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Alert, Button, Container, Form, FormControl, Row } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
+import NavBar from '../../../components/navBar';
 import api from '../../../services/api';
 
 import './styles.css';
@@ -91,6 +92,7 @@ const EditUser = () => {
     return (
         <main>
             <Container>
+                <NavBar />
                 <Row>
                     <Form onSubmit={handleSubmit}>
                         <h4 className="mb-5">Editar usuário</h4>

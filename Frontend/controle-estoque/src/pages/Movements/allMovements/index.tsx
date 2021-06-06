@@ -39,11 +39,16 @@ const MovementList = () => {
         });        
     });
 
+    async function handleClick() {
+        history.goBack();
+    }
+
     return(
         <Container>
             <NavBar />
             <h4>Lançamentos</h4>
             <Link to="/newMovement" className="btn btn-outline-success mb-5">Novo lançamento</Link>
+            <Link to="" onClick={handleClick} className="btn btn-outline-danger ml-2 mb-5">Voltar</Link>
             <Table striped bordered hover>
                 <thead>
                 <tr>

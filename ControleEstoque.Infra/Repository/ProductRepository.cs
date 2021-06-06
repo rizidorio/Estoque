@@ -2,10 +2,7 @@
 using ControleEstoque.Domain.Interface.Repository;
 using ControleEstoque.Infra.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Repository
@@ -56,7 +53,7 @@ namespace ControleEstoque.Infra.Repository
 
         public async Task<Product> Update(Product product)
         {
-            using (var transaction = _context.Database.BeginTransaction())
+            using (Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction transaction = _context.Database.BeginTransaction())
             {
                 _set.Update(product);
                 await _context.SaveChangesAsync();

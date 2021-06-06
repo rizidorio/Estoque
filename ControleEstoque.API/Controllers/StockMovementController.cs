@@ -75,7 +75,7 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var product = await _productService.GetById(stockMovementDto.ProductId);
+                    ProductDto product = await _productService.GetById(stockMovementDto.ProductId);
                     setStockMovement(product, stockMovementDto);
                     StockMovementDto result = await _service.Insert(stockMovementDto);
 
@@ -98,7 +98,7 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var product = await _productService.GetById(stockMovementDto.ProductId);
+                    ProductDto product = await _productService.GetById(stockMovementDto.ProductId);
                     setStockMovement(product, stockMovementDto);
 
                     StockMovementDto result = await _service.Update(stockMovementDto);

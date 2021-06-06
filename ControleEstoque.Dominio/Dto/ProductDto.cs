@@ -6,6 +6,7 @@ namespace ControleEstoque.Domain.Dto
     public class ProductDto
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = "SKU é obrigatório.")]
         [RegularExpression(@"^[A-Z\d]{8,12}$", ErrorMessage = "SKU em formato inválido.")]
         public string SKU { get; set; }

@@ -13,7 +13,7 @@ const NavBar = () => {
             <Nav.Link href="/products">Produtos</Nav.Link>
             <Nav.Link href="/users">Usuários</Nav.Link>
             <Nav.Link href="/movements">Lançamentos</Nav.Link>
-            <Nav.Link href="/">Sair</Nav.Link>
+            <Nav.Link href="/" onClick={() => sessionStorage.removeItem('login')}>Sair</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

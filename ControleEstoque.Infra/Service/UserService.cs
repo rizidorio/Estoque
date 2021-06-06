@@ -106,7 +106,7 @@ namespace ControleEstoque.Infra.Service
             user.Code = userDto.Code;
             user.Name = userDto.Name;
 
-            if(!userDto.compareHashPassword(user.Password))
+            if(!userDto.CompareHashPassword(user.Password))
                 user.Password = userDto.GetHashPassword();
 
             user.Role = userDto.Role;

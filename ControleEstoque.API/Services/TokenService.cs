@@ -1,5 +1,4 @@
 ﻿using ControleEstoque.Domain.Dto;
-using ControleEstoque.Domain.Entity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;

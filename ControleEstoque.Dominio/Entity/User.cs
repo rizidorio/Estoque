@@ -16,7 +16,5 @@
             Password = password;
             Role = role;
         }
-
-        public string GetLowerName => Name.ToLower();
     }
 }

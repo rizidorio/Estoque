@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Container, Table } from 'react-bootstrap';
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import NavBar from '../../../components/navBar';
 
 import api from '../../../services/api';
@@ -18,6 +18,7 @@ interface Product {
 }
 
 const ProductList = () => {
+    const history = useHistory();
     const [product, setProduct] = useState<Product[]>([]);
 
     const token = sessionStorage.getItem('login');
@@ -46,11 +47,16 @@ const ProductList = () => {
         });
     }
 
+    async function handleClick() {
+        history.goBack();
+    }
+
     return(
         <Container>
             <NavBar />
             <h4>Produtos</h4>
             <Link to="/newProduct" className="btn btn-outline-success mb-5">Novo produto</Link>
+            <Link to="" onClick={handleClick} className="btn btn-outline-danger ml-2 mb-5">Voltar</Link>
             <Table striped bordered hover>
                 <thead>
                 <tr>

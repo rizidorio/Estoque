@@ -14,10 +14,10 @@ namespace ControleEstoque.Domain.Entity
         public DateTime ChangeDate { get; set; }
         public bool Inactive { get; set; }
 
-        public Product(int id, string sKU, string name, string description, string category, decimal cust, decimal quantity, DateTime changeDate, bool inactive = false)
+        public Product(int id, string sku, string name, string description, string category, decimal cust, decimal quantity, DateTime changeDate, bool inactive = false)
         {
             Id = id;
-            SKU = sKU;
+            SKU = sku;
             Name = name;
             Description = description;
             Category = category;

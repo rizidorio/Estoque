@@ -5,7 +5,6 @@ using ControleEstoque.Domain.Interface.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Service
@@ -23,10 +22,12 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<IEnumerable<ProductDto>> GetAll()
         {
-            var products = await _repository.GetAll();
+            IEnumerable<Product> products = await _repository.GetAll();
 
             if (!products.Any())
+            {
                 throw new Exception("Não existe produtos cadastrados.");
+            }
 
             return products.Select(x => new ProductDto
             {
@@ -44,10 +45,12 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<ProductDto> GetBySku(string sku)
         {
-            var product = await _repository.GetBySku(sku);
+            Product product = await _repository.GetBySku(sku);
 
             if (product is null)
+            {
                 throw new Exception("Produto não encontrado.");
+            }
 
             return new ProductDto
             {
@@ -65,10 +68,12 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<ProductDto> GetById(int id)
         {
-            var product = await _repository.GetById(id);
+            Product product = await _repository.GetById(id);
 
             if (product is null)
+            {
                 throw new Exception("Produto não encontrado.");
+            }
 
             return new ProductDto
             {
@@ -86,29 +91,35 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<ProductDto> Insert(ProductDto productDto)
         {
-            var product = await _repository.GetBySku(productDto.SKU);
+            Product product = await _repository.GetBySku(productDto.SKU);
 
             if (product is null)
             {
                 product = new Product(productDto.Id, productDto.SKU, productDto.Name, productDto.Description, productDto.Category, productDto.Cust, productDto.Quantity, productDto.ChangeDate);
-                var result = await _repository.Insert(product);
+                Product result = await _repository.Insert(product);
 
                 if (result is null)
+                {
                     throw new Exception("Não foi possível cadastrar o produto.");
+                }
 
                 productDto.Id = result.Id;
                 return productDto;
             }
             else
+            {
                 throw new Exception("Produto já cadastrado.");
+            }
         }
 
         public async Task<bool> Remover(string sku)
         {
-            var product = await _repository.GetBySku(sku);
+            Product product = await _repository.GetBySku(sku);
 
             if (product is null)
+            {
                 throw new Exception("Produto não encontrado.");
+            }
 
             await _repository.Remove(product);
             return true;
@@ -116,15 +127,19 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<ProductDto> Update(ProductDto productDto)
         {
-            var product = await _repository.GetBySku(productDto.SKU);
+            Product product = await _repository.GetBySku(productDto.SKU);
 
-            var movements = await _movementService.ListByProductId(productDto.Id);
+            IEnumerable<StockMovementDto> movements = await _movementService.ListByProductId(productDto.Id);
 
             if (movements.Any())
+            {
                 throw new Exception("O produto não pode ser excluido.");
+            }
 
             if (product is null)
+            {
                 throw new Exception("Produto não encontrado.");
+            }
 
             product.Id = productDto.Id;
             product.Name = productDto.Name;
@@ -135,10 +150,12 @@ namespace ControleEstoque.Infra.Service
             product.ChangeDate = productDto.ChangeDate;
             product.Inactive = productDto.Inactive;
 
-            var result = await _repository.Update(product);
+            Product result = await _repository.Update(product);
 
             if (result is null)
+            {
                 throw new Exception("Não foi possível atualizar o produto.");
+            }
 
             return productDto;
         }

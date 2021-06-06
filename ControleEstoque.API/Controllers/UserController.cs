@@ -1,9 +1,7 @@
 ﻿using ControleEstoque.API.Services;
 using ControleEstoque.Domain.Dto;
 using ControleEstoque.Domain.Interface.Service;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -60,13 +58,15 @@ namespace ControleEstoque.API.Controllers
         {
             try
             {
-                var users = await _service.GetAll();
-                var user = users.FirstOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.GetHashPassword()));
+                IEnumerable<UserDto> users = await _service.GetAll();
+                UserDto user = users.FirstOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.GetHashPassword()));
 
                 if (user is null)
+                {
                     return NotFound("Usuário ou senha inválidos.");
+                }
 
-                var token = TokenService.GenerateToken(user);
+                string token = TokenService.GenerateToken(user);
                 user.Password = string.Empty;
 
                 return new
@@ -78,7 +78,7 @@ namespace ControleEstoque.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-            
+
         }
 
         [HttpPost]

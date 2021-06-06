@@ -27,7 +27,7 @@ namespace ControleEstoque.API.Controllers
         {
             try
             {
-                var products = await _service.GetAll();
+                IEnumerable<ProductDto> products = await _service.GetAll();
 
                 return Ok(products);
             }
@@ -43,7 +43,7 @@ namespace ControleEstoque.API.Controllers
         {
             try
             {
-                var product = await _service.GetBySku(sku);
+                ProductDto product = await _service.GetBySku(sku);
 
                 return Ok(product);
             }
@@ -61,7 +61,7 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _service.Insert(productDto);
+                    ProductDto result = await _service.Insert(productDto);
                     return CreatedAtAction(nameof(Get), new { sku = result.SKU }, result);
                 }
 
@@ -81,7 +81,7 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await _service.Update(productDto);
+                    ProductDto result = await _service.Update(productDto);
                     return Ok($"Porduto {result.Name} atualizado com sucesso.");
                 }
 
@@ -102,7 +102,9 @@ namespace ControleEstoque.API.Controllers
                 bool result = await _service.Remover(sku);
 
                 if (result)
+                {
                     return NoContent();
+                }
 
                 throw new Exception("Não foi possível apagar o produto.");
             }

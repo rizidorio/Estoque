@@ -7,6 +7,7 @@ namespace ControleEstoque.Domain.Dto
     public class UserDto
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Nome do Usuário é obrigatório.")]
         [MaxLength(50, ErrorMessage = "O Nome deve ter mo máximo 50 caracteres.")]
         [MinLength(3, ErrorMessage = "O Nome deve ter no mínimo 03 caracteres.")]
@@ -36,7 +37,7 @@ namespace ControleEstoque.Domain.Dto
             return sb.ToString();
         }
 
-        public bool compareHashPassword(string hash)
+        public bool CompareHashPassword(string hash)
         {
             if (Password.Length.Equals(hash.Length))
             {

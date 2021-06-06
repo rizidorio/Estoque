@@ -45,11 +45,16 @@ const UsersList = () => {
         });
     }
 
+    async function handleClick() {
+        history.goBack();
+    }
+
     return(
         <Container>
             <NavBar />
             <h4>Usuários</h4>
             <Link to="/newUser" className="btn btn-outline-success mb-5">Novo usuário</Link>
+            <Link to="" onClick={handleClick} className="btn btn-outline-danger ml-2 mb-5">Voltar</Link>
             <Table striped bordered hover>
                 <thead>
                 <tr>
