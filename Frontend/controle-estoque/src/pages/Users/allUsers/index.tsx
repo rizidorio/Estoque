@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Navbar, Table } from 'react-bootstrap';
+import { Container, Table } from 'react-bootstrap';
 import { FiEdit, FiTrash } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import NavBar from '../../../components/navBar';
 
 import api from '../../../services/api';
@@ -15,11 +15,11 @@ interface User {
 }
 
 const UsersList = () => {
+    const history = useHistory();
+
     const [users, setUsers] = useState<User[]>([]);
 
     const token = sessionStorage.getItem('login');
-    //console.log(token);
-    //const token = login?.split()
 
     useEffect(() => {
         api.get('user', {
@@ -31,7 +31,19 @@ const UsersList = () => {
         }).catch((error) => {
             console.log(error)
         });        
-    });
+    }, []);
+
+    async function handleDeleteUser(userCode: string) {
+        await api.delete(`user/${userCode}`, {
+            headers: {
+                 "Authorization" : `bearer ${token}` 
+            }
+        }).then(response => {
+            console.log(response.data);
+        }).catch(error => {
+           console.log(error.data);
+        });
+    }
 
     return(
         <Container>
@@ -54,8 +66,8 @@ const UsersList = () => {
                             <td>{user.name}</td>
                             <td>{user.role}</td>
                             <td>
-                                <Link className="mr-2 btn btn-outline-primary" to="/"><FiEdit /></Link>
-                                <Link className="btn btn-outline-danger" to="/"><FiTrash /></Link>
+                                <Link className="mr-2 btn btn-outline-primary" to="/editUser" onClick={() => localStorage.setItem('userCode', user.code)}><FiEdit /></Link>
+                                <Link className="btn btn-outline-danger" to="/home" onClick={() => handleDeleteUser(user.code)}><FiTrash /></Link>
                             </td>
                         </tr>
                     ))}

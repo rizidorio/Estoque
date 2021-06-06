@@ -13,10 +13,12 @@ namespace ControleEstoque.Infra.Service
     public class ProductService : IProductService
     {
         private readonly IProductRepository _repository;
+        private readonly IStockMovementService _movementService;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IProductRepository repository, IStockMovementService movementService)
         {
             _repository = repository;
+            _movementService = movementService;
         }
 
         public async Task<IEnumerable<ProductDto>> GetAll()
@@ -34,6 +36,7 @@ namespace ControleEstoque.Infra.Service
                 Description = x.Description,
                 Category = x.Category,
                 Cust = x.Cust,
+                Quantity = x.Quantity,
                 ChangeDate = x.ChangeDate,
                 Inactive = x.Inactive,
             });
@@ -54,6 +57,28 @@ namespace ControleEstoque.Infra.Service
                 Description = product.Description,
                 Category = product.Category,
                 Cust = product.Cust,
+                Quantity = product.Quantity,
+                ChangeDate = product.ChangeDate,
+                Inactive = product.Inactive,
+            };
+        }
+
+        public async Task<ProductDto> GetById(int id)
+        {
+            var product = await _repository.GetById(id);
+
+            if (product is null)
+                throw new Exception("Produto não encontrado.");
+
+            return new ProductDto
+            {
+                Id = product.Id,
+                SKU = product.SKU,
+                Name = product.Name,
+                Description = product.Description,
+                Category = product.Category,
+                Cust = product.Cust,
+                Quantity = product.Quantity,
                 ChangeDate = product.ChangeDate,
                 Inactive = product.Inactive,
             };
@@ -65,7 +90,7 @@ namespace ControleEstoque.Infra.Service
 
             if (product is null)
             {
-                product = new Product(productDto.Id, productDto.SKU, productDto.Name, productDto.Description, productDto.Category, productDto.Cust, productDto.ChangeDate);
+                product = new Product(productDto.Id, productDto.SKU, productDto.Name, productDto.Description, productDto.Category, productDto.Cust, productDto.Quantity, productDto.ChangeDate);
                 var result = await _repository.Insert(product);
 
                 if (result is null)
@@ -93,6 +118,11 @@ namespace ControleEstoque.Infra.Service
         {
             var product = await _repository.GetBySku(productDto.SKU);
 
+            var movements = await _movementService.ListByProductId(productDto.Id);
+
+            if (movements.Any())
+                throw new Exception("O produto não pode ser excluido.");
+
             if (product is null)
                 throw new Exception("Produto não encontrado.");
 
@@ -101,6 +131,7 @@ namespace ControleEstoque.Infra.Service
             product.Description = productDto.Description;
             product.Category = productDto.Category;
             product.Cust = productDto.Cust;
+            product.Quantity = productDto.Quantity;
             product.ChangeDate = productDto.ChangeDate;
             product.Inactive = productDto.Inactive;
 

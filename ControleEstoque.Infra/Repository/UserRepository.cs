@@ -18,6 +18,10 @@ namespace ControleEstoque.Infra.Repository
             _set = _context.Set<User>();
         }
 
+        public void Dispose()
+        {
+        }
+
         public async Task<IEnumerable<User>> GetAll()
         {
             return await _set.AsNoTracking().ToListAsync();

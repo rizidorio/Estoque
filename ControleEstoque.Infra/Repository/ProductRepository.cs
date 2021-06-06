@@ -21,14 +21,18 @@ namespace ControleEstoque.Infra.Repository
             _set = _context.Set<Product>();
         }
 
+        public void Dispose()
+        {
+        }
+
         public async Task<IEnumerable<Product>> GetAll()
         {
             return await _set.AsNoTracking().ToListAsync();
         }
 
-        public Task<Product> GetById(int id)
+        public async Task<Product> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await _set.FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
         public async Task<Product> GetBySku(string sku)
@@ -52,8 +56,13 @@ namespace ControleEstoque.Infra.Repository
 
         public async Task<Product> Update(Product product)
         {
-            _set.Update(product);
-            await _context.SaveChangesAsync();
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                _set.Update(product);
+                await _context.SaveChangesAsync();
+
+                transaction.Commit();
+            }
             return product;
         }
     }

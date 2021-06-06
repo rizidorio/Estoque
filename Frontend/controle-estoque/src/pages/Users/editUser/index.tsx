@@ -1,6 +1,5 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { Alert, Button, Container, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
-import { FiLock } from 'react-icons/fi';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { Alert, Button, Container, Form, FormControl, Row } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../../services/api';
 
@@ -17,10 +16,32 @@ interface ErroMsg {
     msg: string,
 }
 
-const NewUser = ({}) => {
+const EditUser = () => {
     const history = useHistory();
     
     const [erroMsg, setErroMsg] = useState<ErroMsg>();
+    const [user, setUser] = useState<User>({
+        name: '',
+        code: '',
+        password: '',
+        role: '',
+    });
+
+    const token = sessionStorage.getItem('login');
+    const userCode = localStorage.getItem('userCode');
+
+    useEffect(() => {
+       api.get(`user/${userCode}`, {
+            headers: {
+                 "Authorization" : `bearer ${token}`
+                }, 
+            }).then(response => {
+            setUser(response.data);
+            setFormData(response.data);
+        }).catch((error) => {
+            console.log(error.response)
+        })
+    }, []);
 
     const [formData, setFormData] = useState({
         name: '',
@@ -29,7 +50,6 @@ const NewUser = ({}) => {
         role: '',
     });
     
-    const [user, setUser] = useState<User[]>([]);
 
     function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
         const {name, value} = event.target;
@@ -44,11 +64,17 @@ const NewUser = ({}) => {
         const data = {
             name: name,
             code: code.toUpperCase(),
-            password: password,
+            password: password ?? user.password,
             role: role,
         }
 
-        await api.post('user', data).then((response) => {
+        console.log(data)
+
+        await api.put('user', data, {
+            headers: {
+                 "Authorization" : `bearer ${token}`
+                }, 
+            }).then((response) => {
             setUser(response.data);
             history.goBack();
         }).catch((error) => {
@@ -67,11 +93,11 @@ const NewUser = ({}) => {
             <Container>
                 <Row>
                     <Form onSubmit={handleSubmit}>
-                        <h4 className="mb-5">Novo Usuário</h4>
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="code" name="code" type="text" placeholder="Código (ABC0000)" naria-label="code" />
+                        <h4 className="mb-5">Editar usuário</h4>
+                        <FormControl onChange={handleInputChange} className="mb-2" id="code" name="code" type="text" placeholder={user.code ?? "Código (ABC0000)"} naria-label="code" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name"  type="text" placeholder={user.name ?? "Usuários"} naria-label="name" />
                         <FormControl onChange={handleInputChange} className="mb-2" id="password" name="password" type="password"  placeholder="Senha" naria-label="password" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="role" name="role" type="text"  placeholder="Perfil" naria-label="role" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="role" name="role" type="text"  placeholder={user.role ?? "Pefil"} naria-label="role" />
                         <div id="buttons">
                             <Button className="ml-4" variant="outline-success" type="submit">Salvar</Button>
                             <Link to="" onClick={handleClick} className="btn btn-outline-danger ml-4"> Cancelar</Link>
@@ -84,4 +110,4 @@ const NewUser = ({}) => {
     );
 }
 
-export default NewUser;
+export default EditUser;

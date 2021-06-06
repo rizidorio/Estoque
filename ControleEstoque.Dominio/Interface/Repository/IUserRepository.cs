@@ -1,10 +1,11 @@
 ﻿using ControleEstoque.Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Interface.Repository
 {
-    public interface IUserRepository
+    public interface IUserRepository : IDisposable
     {
         Task<User> Insert(User user);
         Task<User> Update(User user);

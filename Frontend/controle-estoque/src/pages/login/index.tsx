@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { Form, Button, Alert, Container, Row, InputGroup, FormControl } from 'react-bootstrap';
 
@@ -46,7 +46,6 @@ const Login = ({}) => {
         }).catch((error) => {
             if (error.response) {
                 setErroMsg(error.response.data);
-            console.log(error.response.data);
             }
         });
     }

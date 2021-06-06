@@ -103,10 +103,12 @@ namespace ControleEstoque.Infra.Service
                 throw new Exception("Usuário não encontrado.");
             }
 
-            user.Id = userDto.Id;
             user.Code = userDto.Code;
             user.Name = userDto.Name;
-            user.Password = userDto.GetHashPassword();
+
+            if(!userDto.compareHashPassword(user.Password))
+                user.Password = userDto.GetHashPassword();
+
             user.Role = userDto.Role;
 
             User result = await _repository.Update(user);

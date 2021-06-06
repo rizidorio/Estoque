@@ -3,14 +3,14 @@ import { Route, BrowserRouter, Switch, Redirect } from 'react-router-dom';
 
 import Home from './pages/Home';
 import Login from './pages/Login';
-import NewUser from './pages/Users/user';
 import Users from './pages/Users/allUsers';
-import Categories from './pages/Categories/allCategories';
-import NewCategory from './pages/Categories/newEditCategory';
-import Measures from './pages/Measures/allMeasures';
-import NewMeasures from './pages/Measures/newEditMeasures';
+import NewUser from './pages/Users/newUser';
+import EditUser from './pages/Users/editUser';
 import Products from './pages/Products/allProducts';
-import NewProduct from './pages/Products/newEditProduct';
+import NewProduct from './pages/Products/newProduct';
+import EditProduct from './pages/Products/editProduct';
+import Movements from './pages/Movements/allMovements';
+import NewMovement from './pages/Movements/newMovement';
 
 interface PrivateRouteProps {
     component: any;
@@ -36,12 +36,12 @@ const Routes = () => {
                 <Route component={NewUser} path="/newUser" exact/>
                 <PrivateRoute component={Home} path="/Home" />
                 <PrivateRoute component={Users} path="/users" />
-                <PrivateRoute component={Categories} path="/categories" />
-                <PrivateRoute component={NewCategory} path="/newCategory" />
-                <PrivateRoute component={Measures} path="/measures" />
-                <PrivateRoute component={NewMeasures} path="/newMeasures" />
+                <PrivateRoute component={EditUser} path="/editUser" />
                 <PrivateRoute component={Products} path="/products" />
                 <PrivateRoute component={NewProduct} path="/newProduct" />
+                <PrivateRoute component={EditProduct} path="/editProduct" />
+                <PrivateRoute component={Movements} path="/movements" />
+                <PrivateRoute component={NewMovement} path="/newMovement" />
             </Switch>
         </BrowserRouter>
     );

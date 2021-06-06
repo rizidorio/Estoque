@@ -58,19 +58,27 @@ namespace ControleEstoque.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<dynamic>> Login([FromBody] UserDto userDto)
         {
-            var users = await _service.GetAll();
-            var user = users.FirstOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.GetHashPassword()));
-
-            if (user is null)
-                return NotFound("Usuário ou senha inválidos.");
-
-            var token = TokenService.GenerateToken(user);
-            user.Password = string.Empty;
-
-            return new
+            try
             {
-                token
-            };
+                var users = await _service.GetAll();
+                var user = users.FirstOrDefault(x => x.Name.Equals(userDto.Name) && x.Password.Equals(userDto.GetHashPassword()));
+
+                if (user is null)
+                    return NotFound("Usuário ou senha inválidos.");
+
+                var token = TokenService.GenerateToken(user);
+                user.Password = string.Empty;
+
+                return new
+                {
+                    token
+                };
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
         }
 
         [HttpPost]

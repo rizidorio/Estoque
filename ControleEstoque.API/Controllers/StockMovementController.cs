@@ -13,10 +13,12 @@ namespace ControleEstoque.API.Controllers
     public class StockMovementController : Controller
     {
         private readonly IStockMovementService _service;
+        private readonly IProductService _productService;
 
-        public StockMovementController(IStockMovementService service)
+        public StockMovementController(IStockMovementService service, IProductService productService)
         {
             _service = service;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -26,6 +28,7 @@ namespace ControleEstoque.API.Controllers
             try
             {
                 IEnumerable<StockMovementDto> stocks = await _service.GetAll();
+
                 return Ok(stocks);
             }
             catch (Exception ex)
@@ -49,13 +52,13 @@ namespace ControleEstoque.API.Controllers
             }
         }
 
-        [HttpGet("listByStock/{stockId}")]
+        [HttpGet("listByProduct/{productId}")]
         [Authorize]
-        public async Task<IActionResult> ListByStock(int stockId)
+        public async Task<IActionResult> ListByStock(int productId)
         {
             try
             {
-                IEnumerable<StockMovementDto> stocks = await _service.ListByStockId(stockId);
+                IEnumerable<StockMovementDto> stocks = await _service.ListByProductId(productId);
                 return Ok(stocks);
             }
             catch (Exception ex)
@@ -72,6 +75,8 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var product = await _productService.GetById(stockMovementDto.ProductId);
+                    setStockMovement(product, stockMovementDto);
                     StockMovementDto result = await _service.Insert(stockMovementDto);
 
                     return CreatedAtAction(nameof(Get), new { id = result.Id }, result);
@@ -93,6 +98,9 @@ namespace ControleEstoque.API.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var product = await _productService.GetById(stockMovementDto.ProductId);
+                    setStockMovement(product, stockMovementDto);
+
                     StockMovementDto result = await _service.Update(stockMovementDto);
 
                     return Ok("Estoque atulizado com sucesso.");
@@ -104,6 +112,20 @@ namespace ControleEstoque.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        private async void setStockMovement(ProductDto productDto, StockMovementDto stockMovementDto)
+        {
+            if (stockMovementDto.TypeMovement == "E")
+            {
+                productDto.Quantity += stockMovementDto.Quantity;
+            }
+            else
+            {
+                productDto.Quantity -= stockMovementDto.Quantity;
+            }
+
+            await _productService.Update(productDto);
         }
     }
 }

@@ -3,14 +3,16 @@ using System;
 using ControleEstoque.Infra.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    partial class MySqlContextModelSnapshot : ModelSnapshot
+    [Migration("20210606141530_refactoreStock")]
+    partial class refactoreStock
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +33,7 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<DateTime>("ChangeDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2021, 6, 6, 13, 41, 16, 629, DateTimeKind.Local).AddTicks(4819));
+                        .HasDefaultValue(new DateTime(2021, 6, 6, 11, 15, 30, 428, DateTimeKind.Local).AddTicks(3859));
 
                     b.Property<decimal>("Cust")
                         .HasColumnType("decimal(15,2)");
@@ -75,7 +77,7 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<DateTime>("DateMovement")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime(6)")
-                        .HasDefaultValue(new DateTime(2021, 6, 6, 13, 41, 16, 635, DateTimeKind.Local).AddTicks(7575));
+                        .HasDefaultValue(new DateTime(2021, 6, 6, 11, 15, 30, 434, DateTimeKind.Local).AddTicks(7080));
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -83,7 +85,7 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<decimal>("Quantity")
                         .HasColumnType("decimal(10,2)");
 
-                    b.Property<string>("TypeMovement")
+                    b.Property<string>("TypeStokMov")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");

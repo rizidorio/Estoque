@@ -13,10 +13,12 @@ namespace ControleEstoque.API.Controllers
     public class ProductController : Controller
     {
         private readonly IProductService _service;
+        private readonly IStockMovementService _movementService;
 
-        public ProductController(IProductService service)
+        public ProductController(IProductService service, IStockMovementService movementService)
         {
             _service = service;
+            _movementService = movementService;
         }
 
         [HttpGet]

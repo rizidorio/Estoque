@@ -37,7 +37,7 @@ namespace ControleEstoque.API
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             string connectionString = Configuration.GetConnectionString("MySQL");
-            services.AddDbContext<MySqlContext>(option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+            services.AddDbContext<MySqlContext>(option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)), ServiceLifetime.Transient);
 
             services.AddCors(options =>
             {

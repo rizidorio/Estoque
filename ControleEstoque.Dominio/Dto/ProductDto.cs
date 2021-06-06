@@ -23,6 +23,7 @@ namespace ControleEstoque.Domain.Dto
 
         [Required(ErrorMessage = "Preço de custo é obrigatório.")]
         public decimal Cust { get; set; }
+        public decimal Quantity { get; set; }
         public DateTime ChangeDate { get; set; }
         public bool Inactive { get; set; }
     }

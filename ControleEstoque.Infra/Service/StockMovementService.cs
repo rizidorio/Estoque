@@ -30,8 +30,8 @@ namespace ControleEstoque.Infra.Service
             return stocks.Select(x => new StockMovementDto
             {
                 Id = x.Id,
-                StokId = x.StokId,
-                TypeStokMov = x.TypeStokMov,
+                ProductId = x.ProductId,
+                TypeMovement = x.TypeMovement,
                 DateMovement = x.DateMovement,
                 Quantity = x.Quantity
             });
@@ -49,8 +49,8 @@ namespace ControleEstoque.Infra.Service
             return new StockMovementDto
             {
                 Id = stock.Id,
-                StokId = stock.StokId,
-                TypeStokMov = stock.TypeStokMov,
+                ProductId = stock.ProductId,
+                TypeMovement = stock.TypeMovement,
                 DateMovement = stock.DateMovement,
                 Quantity = stock.Quantity
             };
@@ -58,7 +58,7 @@ namespace ControleEstoque.Infra.Service
 
         public async Task<StockMovementDto> Insert(StockMovementDto stockMovementDto)
         {
-            StockMovement stock = new StockMovement(stockMovementDto.Id, stockMovementDto.StokId, stockMovementDto.TypeStokMov, stockMovementDto.Quantity, stockMovementDto.DateMovement);
+            StockMovement stock = new StockMovement(stockMovementDto.Id, stockMovementDto.ProductId, stockMovementDto.TypeMovement, stockMovementDto.Quantity, stockMovementDto.DateMovement);
             StockMovement result = await _repository.Insert(stock);
 
             if (result is null)
@@ -70,11 +70,11 @@ namespace ControleEstoque.Infra.Service
             return stockMovementDto;
         }
 
-        public async Task<IEnumerable<StockMovementDto>> ListByStockId(int stockId)
+        public async Task<IEnumerable<StockMovementDto>> ListByProductId(int productId)
         {
             var stocks = await GetAll();
 
-            return stocks.Where(x => x.StokId.Equals(stockId));
+            return stocks.Where(x => x.ProductId.Equals(productId));
         }
 
         public async Task<StockMovementDto> Update(StockMovementDto stockMovementDto)
@@ -86,7 +86,7 @@ namespace ControleEstoque.Infra.Service
 
             stock.DateMovement = stockMovementDto.DateMovement;
             stock.Quantity = stockMovementDto.Quantity;
-            stock.TypeStokMov = stockMovementDto.TypeStokMov;
+            stock.TypeMovement = stockMovementDto.TypeMovement;
 
             var result = await _repository.Update(stock);
 

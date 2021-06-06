@@ -7,7 +7,6 @@ namespace ControleEstoque.Infra.Context
     public class MySqlContext : DbContext
     {
         public DbSet<Product> Product { get; set; }
-        public DbSet<Stock> Stock { get; set; }
         public DbSet<StockMovement> StockMovement { get; set; }
         public DbSet<User> User { get; set; }
 
@@ -19,7 +18,6 @@ namespace ControleEstoque.Infra.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
-            modelBuilder.ApplyConfiguration(new StockConfiguration());
             modelBuilder.ApplyConfiguration(new StockMovementConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 

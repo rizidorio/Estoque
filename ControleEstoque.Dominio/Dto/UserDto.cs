@@ -35,5 +35,20 @@ namespace ControleEstoque.Domain.Dto
             }
             return sb.ToString();
         }
+
+        public bool compareHashPassword(string hash)
+        {
+            if (Password.Length.Equals(hash.Length))
+            {
+                int index = 0;
+                while((index < Password.Length) && Password[index].Equals(hash[index]))
+                {
+                    index++;
+                }
+                if (index.Equals(Password.Length))
+                    return true;
+            }
+            return false;
+        }
     }
 }

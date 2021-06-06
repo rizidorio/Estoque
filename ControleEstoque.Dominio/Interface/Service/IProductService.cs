@@ -10,6 +10,7 @@ namespace ControleEstoque.Domain.Interface.Service
         Task<ProductDto> Update(ProductDto productDto);
         Task<bool> Remover(string sku);
         Task<ProductDto> GetBySku(string sku);
+        Task<ProductDto> GetById(int id);
         Task<IEnumerable<ProductDto>> GetAll();
     }
 }

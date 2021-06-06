@@ -1,6 +1,5 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { Alert, Button, Container, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
-import { FiLock } from 'react-icons/fi';
+import { Alert, Button, Container, Form, FormControl, Row } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import api from '../../../services/api';
 
@@ -10,8 +9,7 @@ interface Product {
     sku: string,
     name: string,
     description: string,
-    categoryId: number,
-    measureId: number,
+    category: string,
     cust: number,    
 }
 
@@ -21,6 +19,7 @@ interface ErroMsg {
 
 const NewProduct = ({}) => {
     const history = useHistory();
+    const token = sessionStorage.getItem('login');
     
     const [erroMsg, setErroMsg] = useState<ErroMsg>();
 
@@ -28,8 +27,7 @@ const NewProduct = ({}) => {
         sku: '',
         name: '',
         description: '',
-        categoryId: 0,
-        measureId: 0,
+        category: '',
         cust: 0,    
     });
     
@@ -43,25 +41,28 @@ const NewProduct = ({}) => {
     async function handleSubmit(event: FormEvent) {
         event.preventDefault();
 
-        const {sku, name, description, categoryId, measureId, cust} = formData;
+        const {sku, name, description, category, cust} = formData;
 
         const data = {
-            sku: sku,
+            sku: sku.toUpperCase(),
             name: name,
             description: description,
-            categoryId: categoryId,
-            measureId: measureId,
+            category: category,
             cust: cust,    
         }
-
-        await api.post('product', data).then((response) => {
+        api.post('product', data, {
+            headers: {
+                    "Authorization" : `bearer ${token}` 
+            }
+        }).then((response) => {
             setProduct(response.data);
             history.goBack();
         }).catch((error) => {
             if (error.response) {
                 setErroMsg(error.response.data);
+                console.log(error.response);
             }
-        });        
+        });               
     }
 
     async function handleClick() {
@@ -74,12 +75,11 @@ const NewProduct = ({}) => {
                 <Row>
                     <Form onSubmit={handleSubmit}>
                         <h4 className="mb-5">Nova unidade de medida</h4>
-                        <FormControl onChange={handleInputChange} className="mb-2" id="code" name="code" type="text" placeholder="SKU" naria-label="code" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
-                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Usuário" naria-label="name" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="sku" name="sku" type="text" placeholder="SKU (entre 8 e 12 caracteres)" naria-label="sku" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="name" name="name" type="text" placeholder="Nome" naria-label="name" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="description" name="description" type="text" placeholder="Descrição" naria-label="description" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="category" name="category" type="text" placeholder="Categoria" naria-label="category" />
+                        <FormControl onChange={handleInputChange} className="mb-2" id="cust" name="cust" type="number" placeholder="Preço de custo" naria-label="cust" />
                         <div id="buttons">
                             <Button className="ml-4" variant="outline-success" type="submit">Salvar</Button>
                             <Link to="" onClick={handleClick} className="btn btn-outline-danger ml-4">Cancelar</Link>

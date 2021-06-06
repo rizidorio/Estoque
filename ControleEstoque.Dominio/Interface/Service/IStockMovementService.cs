@@ -9,7 +9,7 @@ namespace ControleEstoque.Domain.Interface.Service
         Task<StockMovementDto> Insert(StockMovementDto stockMovementDto);
         Task<StockMovementDto> Update(StockMovementDto stockMovementDto);
         Task<StockMovementDto> GetById(int id);
-        Task<IEnumerable<StockMovementDto>> ListByStockId(int stockId);
+        Task<IEnumerable<StockMovementDto>> ListByProductId(int productId);
         Task<IEnumerable<StockMovementDto>> GetAll();
     }
 }

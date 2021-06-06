@@ -21,6 +21,10 @@ namespace ControleEstoque.Infra.Repository
             _set = context.Set<StockMovement>();
         }
 
+        public void Dispose()
+        {
+        }
+
         public async Task<IEnumerable<StockMovement>> GetAll()
         {
             return await _set.AsNoTracking().ToListAsync();

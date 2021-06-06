@@ -1,10 +1,11 @@
 ﻿using ControleEstoque.Domain.Entity;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Interface.Repository
 {
-    public interface IStockMovementRepository
+    public interface IStockMovementRepository : IDisposable
     {
         Task<StockMovement> Insert(StockMovement stockMovement);
         Task<StockMovement> Update(StockMovement stockMovement);
