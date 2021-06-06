@@ -14,6 +14,7 @@ namespace ControleEstoque.Infra.Configuration
             builder.Property(p => p.SKU).HasMaxLength(12).IsRequired();
             builder.Property(p => p.Name).HasMaxLength(100).IsRequired();
             builder.Property(p => p.Description).IsRequired();
+            builder.Property(p => p.Category).HasMaxLength(30).IsRequired();
             builder.Property(p => p.Cust).HasColumnType("decimal(15,2)");
             builder.Property(p => p.ChangeDate).HasDefaultValue(DateTime.Now);
             builder.Property(p => p.Inactive).HasDefaultValue(false);

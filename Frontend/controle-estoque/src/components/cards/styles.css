@@ -1,7 +1,7 @@
 .cards {
     display: inline-flex !important;
-    width: 22rem;
-    margin: 1rem;
+    width: 25rem;
+    margin: 3rem;
 }
 
 .cardBody {

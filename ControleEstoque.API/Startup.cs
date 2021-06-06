@@ -39,11 +39,13 @@ namespace ControleEstoque.API
             string connectionString = Configuration.GetConnectionString("MySQL");
             services.AddDbContext<MySqlContext>(option => option.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-            //services.AddAuthorization(auth => {
-            //    auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
-            //                .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
-            //                .RequireAuthenticatedUser().Build());
-            //});
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -106,6 +108,8 @@ namespace ControleEstoque.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseAuthentication();
             app.UseAuthorization();

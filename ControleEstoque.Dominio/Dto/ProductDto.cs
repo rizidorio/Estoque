@@ -18,15 +18,12 @@ namespace ControleEstoque.Domain.Dto
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Categoria é obrigatória.")]
-        public int CategoryId { get; set; }
-
-        [Required(ErrorMessage = "Unidade de medida é obrigatório.")]
-        public int MeasureId { get; set; }
+        [MaxLength(30, ErrorMessage = "A categoria deve conter no máximo 30 caracteres.")]
+        public string Category { get; set; }
 
         [Required(ErrorMessage = "Preço de custo é obrigatório.")]
         public decimal Cust { get; set; }
         public DateTime ChangeDate { get; set; }
-        public int UserChangeId { get; set; }
         public bool Inactive { get; set; }
     }
 }

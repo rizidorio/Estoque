@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Card } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import './styles.css';
 
@@ -7,22 +8,24 @@ interface CardsProps {
     Header: string;
     background: string;
     idx: string;
-    buttonName1: string;
-    buttonName2: string;
-    buttonBg: string;
+    linkName1: string;
+    linkAction1: string;
+    linkClass1: string;
+    linkName2: string;
+    linkAction2: string;
+
 }
 
 const Cards: React.FC<CardsProps> = (props) => {
     return(
             <Card className="cards"
-                bg={props.background.toLowerCase()}
+                border={props.background.toLowerCase()}
                 key={props.idx}
-                text={props.background.toLowerCase() === 'light' ? 'dark' : 'white'}
             >
-                <Card.Header className="text-center">{props.Header}</Card.Header>
+                <Card.Header>{props.Header}</Card.Header>
                 <Card.Body className="cardBody">
-                    <Button className="cardButton" variant={props.buttonBg.toLowerCase()}>{props.buttonName1}</Button>
-                    <Button variant={props.buttonBg.toLowerCase()}>{props.buttonName2}</Button>
+                    <Link to={props.linkAction1} className={props.linkClass1} >{props.linkName1}</Link>
+                    <Link to={props.linkAction2} className={props.linkClass1}>{props.linkName2}</Link>
                 </Card.Body>
             </Card>
         );

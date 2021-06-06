@@ -10,13 +10,10 @@ namespace ControleEstoque.Domain.Dto
         public int StokId { get; set; }
 
         [Required(ErrorMessage = "Tipo de movimentação é obrigatório.")]
-        public int TypeStokMov { get; set; }
+        public string TypeStokMov { get; set; }
 
         [Required(ErrorMessage = "Quantidade é obrigatório.")]
         public decimal Quantity { get; set; }
         public DateTime DateMovement { get; set; }
-
-        [Required(ErrorMessage = "Usuário é obrigatório.")]
-        public int UserMovementId { get; set; }
     }
 }

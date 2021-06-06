@@ -32,11 +32,9 @@ namespace ControleEstoque.Infra.Service
                 SKU = x.SKU,
                 Name = x.Name,
                 Description = x.Description,
-                CategoryId = x.CategoryId,
-                MeasureId = x.MeasureId,
+                Category = x.Category,
                 Cust = x.Cust,
                 ChangeDate = x.ChangeDate,
-                UserChangeId = x.UserChangeId,
                 Inactive = x.Inactive,
             });
         }
@@ -54,11 +52,9 @@ namespace ControleEstoque.Infra.Service
                 SKU = product.SKU,
                 Name = product.Name,
                 Description = product.Description,
-                CategoryId = product.CategoryId,
-                MeasureId = product.MeasureId,
+                Category = product.Category,
                 Cust = product.Cust,
                 ChangeDate = product.ChangeDate,
-                UserChangeId = product.UserChangeId,
                 Inactive = product.Inactive,
             };
         }
@@ -69,7 +65,7 @@ namespace ControleEstoque.Infra.Service
 
             if (product is null)
             {
-                product = new Product(productDto.Id, productDto.SKU, productDto.Name, productDto.Description, productDto.CategoryId, productDto.MeasureId, productDto.Cust, productDto.ChangeDate, productDto.UserChangeId);
+                product = new Product(productDto.Id, productDto.SKU, productDto.Name, productDto.Description, productDto.Category, productDto.Cust, productDto.ChangeDate);
                 var result = await _repository.Insert(product);
 
                 if (result is null)
@@ -103,11 +99,9 @@ namespace ControleEstoque.Infra.Service
             product.Id = productDto.Id;
             product.Name = productDto.Name;
             product.Description = productDto.Description;
-            product.CategoryId = productDto.CategoryId;
-            product.MeasureId = productDto.MeasureId;
+            product.Category = productDto.Category;
             product.Cust = productDto.Cust;
             product.ChangeDate = productDto.ChangeDate;
-            product.UserChangeId = productDto.UserChangeId;
             product.Inactive = productDto.Inactive;
 
             var result = await _repository.Update(product);

@@ -33,7 +33,6 @@ namespace ControleEstoque.Infra.Service
                 StokId = x.StokId,
                 TypeStokMov = x.TypeStokMov,
                 DateMovement = x.DateMovement,
-                UserMovementId = x.UserMovementId,
                 Quantity = x.Quantity
             });
         }
@@ -53,14 +52,13 @@ namespace ControleEstoque.Infra.Service
                 StokId = stock.StokId,
                 TypeStokMov = stock.TypeStokMov,
                 DateMovement = stock.DateMovement,
-                UserMovementId = stock.UserMovementId,
                 Quantity = stock.Quantity
             };
         }
 
         public async Task<StockMovementDto> Insert(StockMovementDto stockMovementDto)
         {
-            StockMovement stock = new StockMovement(stockMovementDto.Id, stockMovementDto.StokId, stockMovementDto.TypeStokMov, stockMovementDto.Quantity, stockMovementDto.DateMovement, stockMovementDto.UserMovementId);
+            StockMovement stock = new StockMovement(stockMovementDto.Id, stockMovementDto.StokId, stockMovementDto.TypeStokMov, stockMovementDto.Quantity, stockMovementDto.DateMovement);
             StockMovement result = await _repository.Insert(stock);
 
             if (result is null)
@@ -88,7 +86,6 @@ namespace ControleEstoque.Infra.Service
 
             stock.DateMovement = stockMovementDto.DateMovement;
             stock.Quantity = stockMovementDto.Quantity;
-            stock.UserMovementId = stockMovementDto.UserMovementId;
             stock.TypeStokMov = stockMovementDto.TypeStokMov;
 
             var result = await _repository.Update(stock);
