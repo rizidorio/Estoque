@@ -11,6 +11,11 @@ namespace ControleEstoque.Domain.Entity
         public decimal Quantity { get; set; }
         public DateTime DateMovement { get; set; }
 
+        public StockMovement()
+        {
+
+        }
+
         public StockMovement(int id, int productId, string typeMovement, decimal quantity, DateTime dateMovement)
         {
             Id = id;

@@ -22,7 +22,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             try
@@ -38,7 +38,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet("{sku}")]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Get(string sku)
         {
             try
@@ -54,7 +54,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Post([FromBody] ProductDto productDto)
         {
             try
@@ -74,7 +74,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpPut]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Put([FromBody] ProductDto productDto)
         {
             try
@@ -94,7 +94,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpDelete("{sku}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(string sku)
         {
             try

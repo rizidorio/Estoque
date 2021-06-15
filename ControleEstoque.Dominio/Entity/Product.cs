@@ -14,6 +14,11 @@ namespace ControleEstoque.Domain.Entity
         public DateTime ChangeDate { get; set; }
         public bool Inactive { get; set; }
 
+        public Product()
+        {
+
+        }
+
         public Product(int id, string sku, string name, string description, string category, decimal cust, decimal quantity, DateTime changeDate, bool inactive = false)
         {
             Id = id;

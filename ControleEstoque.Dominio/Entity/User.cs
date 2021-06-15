@@ -8,6 +8,11 @@
         public string Password { get; set; }
         public string Role { get; set; }
 
+        public User()
+        {
+
+        }
+
         public User(int id, string code, string name, string password, string role)
         {
             Id = id;
